@@ -40,12 +40,6 @@ if (app.get('env') === 'production') {
   app.set('trust proxy', true);
 }
 
-app.use(helmet({
-  hsts: {
-    maxAge: 0,
-    includeSubDomains: true
-  }
-}));
 app.use(express.static('public'));
 app.use('/', express.static('./lib/static/homepage'));
 app.use('/payments', express.static('./lib/static/payments'));
@@ -54,6 +48,7 @@ app.use('/errors', express.static('./node_modules/server-error-pages/_site'));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(responseTime());
+app.use(helmet());
 app.use(compression());
 app.use(middleware.sendEmails({
   mailgunApiKey: environment.mailgunApiKey,
